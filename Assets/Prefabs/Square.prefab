@@ -414,3 +414,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitMove: 1
   dropping: 0
+  allowRotation: 0
+  limitRotation: 0

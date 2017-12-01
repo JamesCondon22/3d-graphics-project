@@ -12,6 +12,10 @@ public class Shapemovement : MonoBehaviour
     //made public because it will be set to false when a new shape is spawned 
     public bool dropping;
 
+
+    public bool allowRotation = true;
+    public bool limitRotation = false;
+
     // Use this for initialization
     void Start()
     {
@@ -37,6 +41,15 @@ public class Shapemovement : MonoBehaviour
                 if (moveRight == true)
                 {
                     transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, transform.localPosition.z);
+
+                    if (CheckIsValidPosition())
+                    {
+                        
+                    }
+                    else
+                    {
+                        transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, transform.localPosition.z);
+                    }
                 }
                 moveRight = false;
             }
@@ -49,7 +62,15 @@ public class Shapemovement : MonoBehaviour
             {
                 if (moveLeft == true)
                 {
-                    transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 4.5f);
+                    transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, transform.localPosition.z);
+                    if (CheckIsValidPosition())
+                    {
+
+                    }
+                    else
+                    {
+                        transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, transform.localPosition.z);
+                    }
                 }
                 moveLeft = false;
             }
@@ -72,6 +93,14 @@ public class Shapemovement : MonoBehaviour
         while (true)
         {
             transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
+            if (CheckIsValidPosition())
+            {
+
+            }
+            else
+            {
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 1.0f, transform.localPosition.z);
+            }
             yield return new WaitForSeconds(waitMove);
         }
 
@@ -81,9 +110,50 @@ public class Shapemovement : MonoBehaviour
     {
         if (Input.GetKeyDown("up"))
         {
-            transform.Rotate(0, 0, 90);
-        }
+            if (allowRotation)
+            {
+                if (limitRotation)
+                {
+                    if (transform.rotation.eulerAngles.z >= 90)
+                    {
+                        transform.Rotate(0, 0, -90);
+                    }
+                    else
+                    {
+                        transform.Rotate(0, 0, 90);
+                    }
+                }
+                else
+                {
+                    transform.Rotate(0, 0, 90);
+                }
+                if (CheckIsValidPosition()){
+                }
+                else
+                {
 
+                    if (limitRotation)
+                    {
+                        if (transform.rotation.eulerAngles.z >= 90)
+                        {
+                            transform.Rotate(0, 0, -90);
+                        }
+                        else
+                        {
+                            transform.Rotate(0, 0, 90);
+                        }
+                    }
+                    else
+                    {
+                        transform.Rotate(0, 0, -90);
+                    }
+
+                    
+                }
+            }
+            
+            
+        }
         if (Input.GetKeyDown("space"))
         {
             dropping = true;
@@ -92,8 +162,30 @@ public class Shapemovement : MonoBehaviour
         if (Input.GetKeyDown("down"))
         {
             transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
+            if (CheckIsValidPosition())
+            {
+
+            }
+            else
+            {
+                transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y + 1.0f, transform.localPosition.z);
+            }
         }
 
+    }
+
+    bool CheckIsValidPosition ()
+    {
+        foreach (Transform mino in transform)
+        {
+            Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
+
+            if (FindObjectOfType<GameController>().CheckIsInsideGrid(pos) == false)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

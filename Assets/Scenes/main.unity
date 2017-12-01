@@ -2998,7 +2998,7 @@ MonoBehaviour:
     type: 2}
   sShape: {fileID: 1970339263774142, guid: db837411508a9b44fad6fbbdfc144818, type: 2}
   zShape: {fileID: 1803270036955256, guid: 98e78e2e6e005ae49b3d12006bab263c, type: 2}
-  wait: 4
+  wait: 5
 --- !u!1001 &1894888761
 Prefab:
   m_ObjectHideFlags: 0
