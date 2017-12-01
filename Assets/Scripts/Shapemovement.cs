@@ -79,14 +79,19 @@ public class Shapemovement : MonoBehaviour
     //rotate 90 degree on y axis 
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("up"))
         {
             transform.Rotate(0, 0, 90);
         }
 
-        if (Input.GetKeyDown("down"))
+        if (Input.GetKeyDown("space"))
         {
             dropping = true;
+        }
+
+        if (Input.GetKeyDown("down"))
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
         }
 
     }
