@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ButtonManager.cs" />
      <Compile Include="Assets\Scripts\grid.cs" />
+     <Compile Include="Assets\Scripts\Shapemovement.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>C:/Users/gameuser/Documents/3d-graphics-project/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
