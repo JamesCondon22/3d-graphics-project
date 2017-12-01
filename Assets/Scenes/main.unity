@@ -367,11 +367,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4545373016710552, guid: e685a0738a4b27c4da1202df3882b52c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 6.7
       objectReference: {fileID: 0}
     - target: {fileID: 4545373016710552, guid: e685a0738a4b27c4da1202df3882b52c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 18.5
+      value: 26.6
       objectReference: {fileID: 0}
     - target: {fileID: 4545373016710552, guid: e685a0738a4b27c4da1202df3882b52c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -727,6 +727,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1723494124}
+  - component: {fileID: 1723494125}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -747,6 +748,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1723494125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1723494123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583cb019b2fc59f4c8f085772f51c49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tShape: {fileID: 1395232187403934, guid: 9bee8295621cc4047809750ee5da328a, type: 2}
+  lShape: {fileID: 1295336868303556, guid: 7644f7c097abe8d49b1a5a38b724e11c, type: 2}
+  mirroredLShape: {fileID: 1670879510748476, guid: 27053bfdb29993849885c38ddaaabcac,
+    type: 2}
+  lineShape: {fileID: 1761750862911264, guid: 408e17ad5a590dd42bd5c1a6948fae7b, type: 2}
+  squareShape: {fileID: 1155902766769824, guid: e685a0738a4b27c4da1202df3882b52c,
+    type: 2}
+  sShape: {fileID: 1970339263774142, guid: db837411508a9b44fad6fbbdfc144818, type: 2}
+  zShape: {fileID: 1803270036955256, guid: 98e78e2e6e005ae49b3d12006bab263c, type: 2}
+  wait: 3
 --- !u!1 &1866407087
 GameObject:
   m_ObjectHideFlags: 0
