@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public static int gridWidth = 10;
+    public static int gridWidth = 11;
     public static int gridHeight = 20;
 
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
@@ -29,7 +29,14 @@ public class GameController : MonoBehaviour {
 
     public bool CheckIsInsideGrid(Vector2 pos)
     {
+        //Debug.Log(pos.y);
         return ((int)pos.x > 0 && (int)pos.x < gridWidth && (int)pos.y > 0);
+    }
+
+    public bool CheckIsInsideGrid2(Vector2 pos)
+    {
+        Debug.Log(pos.y);
+        return ((int)pos.x > 0 && (int)pos.x < gridWidth && (int)pos.y >= 0);
     }
 
     public Vector2 Round(Vector2 pos)
@@ -39,6 +46,7 @@ public class GameController : MonoBehaviour {
 
     public bool IsFullRowAt(int y)
     {
+        //Debug.Log(y);
         for (int x = 0; x < gridWidth; x++)
         {
             if(grid[x, y] == null)
@@ -84,6 +92,7 @@ public class GameController : MonoBehaviour {
     {
         for(int y = 0; y < gridHeight; y++)
         {
+            //Debug.Log(IsFullRowAt(y));
             if(IsFullRowAt(y))
             {
                 DeleteMinoAt(y);
@@ -99,8 +108,10 @@ public class GameController : MonoBehaviour {
         {
             for (int x = 0; x < gridWidth; x++)
             {
+                //Debug.Log(grid[x, y]);
                 if(grid[x, y] != null)
                 {
+
                     if(grid[x,y].parent == tetromino.transform)
                     {
                         grid[x, y] = null;
@@ -115,6 +126,7 @@ public class GameController : MonoBehaviour {
             Vector2 pos = new Vector2(Mathf.Round(mino.position.x), Mathf.Round(mino.position.y));
             if(pos.y < gridHeight)
             {
+                //Debug.Log("Mino y pos: " + pos.y);
                 grid[(int)pos.x, (int)pos.y] = mino;
             }
         }

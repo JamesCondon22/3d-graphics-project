@@ -403,3 +403,4 @@ MonoBehaviour:
   dropping: 0
   allowRotation: 1
   limitRotation: 1
+  move: 1

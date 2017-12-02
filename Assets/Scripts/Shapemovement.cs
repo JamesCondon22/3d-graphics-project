@@ -16,6 +16,8 @@ public class Shapemovement : MonoBehaviour
     public bool allowRotation = true;
     public bool limitRotation = false;
 
+    public bool move = true;
+
     // Use this for initialization
     void Start()
     {
@@ -23,7 +25,10 @@ public class Shapemovement : MonoBehaviour
         moveLeft = true;
         moveRight = true;
 
-        StartCoroutine(MoveDown());
+        if (move == true)
+        {
+            StartCoroutine(MoveDown());
+        }
     }
 
 
@@ -40,7 +45,7 @@ public class Shapemovement : MonoBehaviour
             {
                 if (moveRight == true)
                 {
-                    transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, transform.localPosition.z);
+                    transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, 0);
 
                     if (CheckIsValidPosition())
                     {
@@ -48,7 +53,7 @@ public class Shapemovement : MonoBehaviour
                     }
                     else
                     {
-                        transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, transform.localPosition.z);
+                        transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
                     }
                 }
                 moveRight = false;
@@ -62,14 +67,14 @@ public class Shapemovement : MonoBehaviour
             {
                 if (moveLeft == true)
                 {
-                    transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, transform.localPosition.z);
+                    transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
                     if (CheckIsValidPosition())
                     {
 
                     }
                     else
                     {
-                        transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, transform.localPosition.z);
+                        transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, 0);
                     }
                 }
                 moveLeft = false;
@@ -82,7 +87,7 @@ public class Shapemovement : MonoBehaviour
 
         if (dropping)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
         }
     }
 
@@ -92,14 +97,19 @@ public class Shapemovement : MonoBehaviour
 
         while (true)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
             if (CheckIsValidPosition())
             {
-
+                
+                Debug.Log("Called");
+                   
+                FindObjectOfType<GameController>().UpdateGrid(this);
             }
             else
             {
-                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 1.0f, transform.localPosition.z);
+                Debug.Log("Not called");
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 1.0f, 0);
+                FindObjectOfType<GameController>().DeleteRow();
             }
             yield return new WaitForSeconds(waitMove);
         }
@@ -161,14 +171,17 @@ public class Shapemovement : MonoBehaviour
 
         if (Input.GetKeyDown("down"))
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, transform.localPosition.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
             if (CheckIsValidPosition())
             {
-
+                FindObjectOfType<GameController>().UpdateGrid(this);
+                Debug.Log("Update");
             }
             else
             {
-                transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y + 1.0f, transform.localPosition.z);
+                transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y + 1.0f, 0);
+                FindObjectOfType<GameController>().DeleteRow();
+                Debug.Log("Delete row");
             }
         }
 
@@ -180,8 +193,20 @@ public class Shapemovement : MonoBehaviour
         {
             Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
 
+            //pos.y = mino.parent.parent.localPosition.y;
+            Debug.Log(mino.parent.name + ": " + pos.y);
+            
+
             if (FindObjectOfType<GameController>().CheckIsInsideGrid(pos) == false)
             {
+                //Debug.Log(mino.parent.name + " not in grid");
+                return false;
+            }
+
+            if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
+            {
+
+                //Debug.Log(mino.parent.name + " error");
                 return false;
             }
         }
