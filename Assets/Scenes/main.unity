@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44326192, g: 0.48590463, b: 0.5365716, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -894,7 +894,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 162, y: 150}
+  m_AnchoredPosition: {x: 200, y: 152.17}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &620953549
@@ -1422,7 +1422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 162, y: 35}
+  m_AnchoredPosition: {x: 200, y: 35}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &896863831
@@ -1547,7 +1547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155, y: 113}
+  m_AnchoredPosition: {x: -240, y: 113}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &915852276
@@ -2463,13 +2463,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1349858870}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.117182, y: 0.012132775, z: -0.0014317144, w: 0.9930353}
+  m_LocalPosition: {x: 9.42, y: 10.25, z: -5.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 13.46, y: 1.4, z: 0}
 --- !u!4 &1365146789 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4187633109253410, guid: e172dd05795c9ba44af5d0d7d148b308,
@@ -3550,6 +3550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583cb019b2fc59f4c8f085772f51c49f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: 1
   Firework: {fileID: 198853715129788350, guid: e6b221c824dc11a4da3021183bbb24a0, type: 2}
   tShape: {fileID: 1640488822536078, guid: 8fd7bfe63624a8b448b8ce59f51ad4f2, type: 2}
   lShape: {fileID: 1640488822536078, guid: 8fd7bfe63624a8b448b8ce59f51ad4f2, type: 2}
@@ -4062,7 +4063,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2107342843}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 10, z: -33.18}
+  m_LocalPosition: {x: 5, y: 11.22, z: -23.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

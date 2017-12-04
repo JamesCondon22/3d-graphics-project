@@ -47,8 +47,14 @@ public class Shapemovement : MonoBehaviour
         {
             CheckUserInput();
         }
-       
-
+        Debug.Log(this.tag);
+        
+        if (this.tag == "Bomb" && !CheckIsValidPosition())
+        {
+            Debug.Log("HI");
+            FindObjectOfType<GameController>().DeleteMinoAt((int)transform.position.y);
+        }
+     
 
         foreach (Transform mino in transform)
         {
