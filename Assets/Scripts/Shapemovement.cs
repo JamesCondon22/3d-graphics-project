@@ -21,6 +21,8 @@ public class Shapemovement : MonoBehaviour
 
     public bool move = true;
 
+    private bool gameover = false;
+
     // Use this for initialization
     void Start()
     {
@@ -36,6 +38,17 @@ public class Shapemovement : MonoBehaviour
             CheckUserInput();
         }
 
+        foreach(Transform mino in transform)
+        {
+            Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
+
+            if (pos.y >= 18 && (pos.x > 8 || pos.x < 5) && !enabled && gameover == false)
+            {
+                Debug.Log("Game over");
+                gameover = true;
+                FindObjectOfType<GameController>().GameOver();
+            }
+        }
 
     }
 

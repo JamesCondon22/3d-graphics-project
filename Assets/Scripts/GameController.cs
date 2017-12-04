@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour {
     public GameObject sShape;
     public GameObject zShape;
     public float wait;
+
+    private bool gameover = false;
     
 
 
@@ -25,6 +27,10 @@ public class GameController : MonoBehaviour {
         SpawnNextTetrimino();
     }
 	
+    public void GameOver()
+    {
+        gameover = true;
+    }
 
     public bool CheckIsInsideGrid(Vector2 pos)
     {
@@ -198,7 +204,10 @@ public class GameController : MonoBehaviour {
     
     public void SpawnNextTetrimino()
     {
-        GameObject nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f,20.0f), Quaternion.identity);
+        if (gameover == false)
+        {
+            GameObject nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
+        }
     }
 
     string GetRandomTetrimino()
