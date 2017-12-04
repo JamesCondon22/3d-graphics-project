@@ -12,6 +12,9 @@ public class Shapemovement : MonoBehaviour
     //made public because it will be set to false when a new shape is spawned 
     public bool dropping;
 
+    private float fall = 0;
+    public float fallSpeed = 1;
+
 
     public bool allowRotation = true;
     public bool limitRotation = false;
@@ -22,103 +25,92 @@ public class Shapemovement : MonoBehaviour
     void Start()
     {
 
-        moveLeft = true;
-        moveRight = true;
-
-        if (move == true)
-        {
-            StartCoroutine(MoveDown());
-        }
     }
 
 
-
-    // FixedUpdate is called at a fixed interval and is independent of frame rate.
-    void FixedUpdate()
+    //rotate 90 degree on y axis 
+    void Update()
     {
-        //Store the current horizontal input in the float moveHorizontal
-        float moveHorizontal = Input.GetAxis("Horizontal");
-
-        if (dropping == false)
+        if (enabled)
         {
-            if (moveHorizontal > 0)
-            {
-                if (moveRight == true)
-                {
-                    transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, 0);
-
-                    if (CheckIsValidPosition())
-                    {
-                        
-                    }
-                    else
-                    {
-                        transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
-                    }
-                }
-                moveRight = false;
-            }
-            else
-            {
-                moveRight = true;
-            }
-
-            if (moveHorizontal < 0)
-            {
-                if (moveLeft == true)
-                {
-                    transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
-                    if (CheckIsValidPosition())
-                    {
-
-                    }
-                    else
-                    {
-                        transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, 0);
-                    }
-                }
-                moveLeft = false;
-            }
-            else
-            {
-                moveLeft = true;
-            }
+            CheckUserInput();
         }
 
-        if (dropping)
-        {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
-        }
+
     }
 
-    IEnumerator MoveDown()
+    bool CheckIsValidPosition ()
     {
-        yield return new WaitForSeconds(waitMove);
-
-        while (true)
+        foreach (Transform mino in transform)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
+            Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
+
+            //pos.y -= 1.0f;
+            //pos.y = mino.parent.parent.localPosition.y;
+            //Debug.Log(mino.parent.name + ": " + pos.y);
+            
+
+            if (FindObjectOfType<GameController>().CheckIsInsideGrid(pos) == false)
+            {
+                Debug.Log(mino.parent.name + " not in grid");
+                return false;
+            }
+
+            if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
+            {
+
+                Debug.Log(mino.parent.name + " error");
+                return false;
+            }
+
+            
+        }
+        return true;
+    }
+
+    bool CheckIfGoingToCollide()
+    {
+
+        foreach (Transform mino in transform)
+        {
+
+            if (FindObjectOfType<GameController>().CheckNextPos(mino))
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    void CheckUserInput()
+    {
+
+        if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            transform.position += new Vector3(1, 0, 0);
             if (CheckIsValidPosition())
             {
-                
-                Debug.Log("Called");
-                   
                 FindObjectOfType<GameController>().UpdateGrid(this);
             }
             else
             {
-                Debug.Log("Not called");
-                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 1.0f, 0);
-                FindObjectOfType<GameController>().DeleteRow();
+                transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
             }
-            yield return new WaitForSeconds(waitMove);
         }
-
-    }
-    //rotate 90 degree on y axis 
-    void Update()
-    {
-        if (Input.GetKeyDown("up"))
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            transform.position += new Vector3(-1, 0, 0);
+            if (CheckIsValidPosition())
+            {
+                FindObjectOfType<GameController>().UpdateGrid(this);
+            }
+            else
+            {
+                transform.localPosition = new Vector3(transform.localPosition.x + 1.0f, transform.localPosition.y, 0);
+            }
+        }
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (allowRotation)
             {
@@ -137,7 +129,9 @@ public class Shapemovement : MonoBehaviour
                 {
                     transform.Rotate(0, 0, 90);
                 }
-                if (CheckIsValidPosition()){
+                if (CheckIsValidPosition())
+                {
+                    FindObjectOfType<GameController>().UpdateGrid(this);
                 }
                 else
                 {
@@ -157,62 +151,29 @@ public class Shapemovement : MonoBehaviour
                     {
                         transform.Rotate(0, 0, -90);
                     }
-
-                    
                 }
             }
-            
-            
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            dropping = true;
-        }
 
-        if (Input.GetKeyDown("down"))
+        }
+        else if(Input.GetKeyDown(KeyCode.DownArrow) || Time.time - fall >= fallSpeed)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.0f, 0);
-            if (CheckIsValidPosition())
+            fall = Time.time;
+            transform.position += new Vector3(0, -1, 0);
+
+            if (CheckIsValidPosition() && CheckIfGoingToCollide())
             {
+                //transform.position += new Vector3(0, -1, 0);
                 FindObjectOfType<GameController>().UpdateGrid(this);
                 Debug.Log("Update");
             }
             else
             {
-                transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y + 1.0f, 0);
+                transform.position += new Vector3(0, 1, 0);
                 FindObjectOfType<GameController>().DeleteRow();
+                FindObjectOfType<GameController>().SpawnNextTetrimino();
+                enabled = false;
                 Debug.Log("Delete row");
             }
         }
-
-    }
-
-    bool CheckIsValidPosition ()
-    {
-        foreach (Transform mino in transform)
-        {
-            Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
-
-            //pos.y = mino.parent.parent.localPosition.y;
-            Debug.Log(mino.parent.name + ": " + pos.y);
-            
-
-            if (FindObjectOfType<GameController>().CheckIsInsideGrid(pos) == false)
-            {
-                //Debug.Log(mino.parent.name + " not in grid");
-                return false;
-            }
-
-            if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
-            {
-
-                //Debug.Log(mino.parent.name + " error");
-                return false;
-            }
-        }
-        return true;
     }
 }
-
-
-

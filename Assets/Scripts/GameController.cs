@@ -22,8 +22,7 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        StartCoroutine(Spawn());
-        //SpawnNextTetromine();
+        SpawnNextTetrimino();
     }
 	
 
@@ -32,12 +31,7 @@ public class GameController : MonoBehaviour {
         //Debug.Log(pos.y);
         return ((int)pos.x > 0 && (int)pos.x < gridWidth && (int)pos.y > 0);
     }
-
-    public bool CheckIsInsideGrid2(Vector2 pos)
-    {
-        Debug.Log(pos.y);
-        return ((int)pos.x > 0 && (int)pos.x < gridWidth && (int)pos.y >= 0);
-    }
+    
 
     public Vector2 Round(Vector2 pos)
     {
@@ -108,11 +102,12 @@ public class GameController : MonoBehaviour {
         {
             for (int x = 0; x < gridWidth; x++)
             {
-                //Debug.Log(grid[x, y]);
-                if(grid[x, y] != null)
-                {
+                
 
-                    if(grid[x,y].parent == tetromino.transform)
+                if (grid[x, y] != null)
+                {
+                    
+                    if (grid[x,y].parent == tetromino.transform)
                     {
                         grid[x, y] = null;
                     }
@@ -128,6 +123,8 @@ public class GameController : MonoBehaviour {
             {
                 //Debug.Log("Mino y pos: " + pos.y);
                 grid[(int)pos.x, (int)pos.y] = mino;
+                //Debug.Log(grid[(int)pos.x, (int)pos.y]);
+                //Debug.Log("X: " + pos.x + "Y: " + pos.y);
             }
         }
     }
@@ -144,42 +141,47 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    IEnumerator Spawn()
+    public bool CheckNextPos(Transform mino)
     {
-        yield return new WaitForSeconds(wait);
-        while (true)
-        {
-            int whichPiece = Random.Range(0, 7);
-            if (whichPiece == 0)
-            {
-                Instantiate(tShape);
-            }
-            else if (whichPiece == 1)
-            {
-                Instantiate(lShape);
-            }
-            else if (whichPiece == 2)
-            {
-                Instantiate(mirroredLShape);
-            }
-            else if (whichPiece == 3)
-            {
-                Instantiate(lineShape);
-            }
-            else if (whichPiece == 4)
-            {
-                Instantiate(squareShape);
-            }
-            else if (whichPiece == 5)
-            {
-                Instantiate(sShape);
-            }
-            else
-            {
-                Instantiate(zShape);
-            }
+        Vector2 pos = Round(mino.position);
 
-            yield return new WaitForSeconds(wait);
+        if (grid[(int)pos.x, (int)pos.y] == null )
+        {
+            return false;
         }
+        else if (grid[(int)pos.x, (int)pos.y].parent == mino.parent)
+        {
+            return false;
+        }
+
+        Debug.Log(grid[(int)pos.x, (int)pos.y].parent + " " + mino.parent);
+
+        return true;
+    }
+    
+    public void SpawnNextTetrimino()
+    {
+        GameObject nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f,20.0f), Quaternion.identity);
+    }
+
+    string GetRandomTetrimino()
+    {
+        int random = Random.Range(1, 0);
+
+        string randomTetName = "Prefabs/Line2";
+
+        switch (random) {
+
+            case 1:
+                randomTetName = "Prefabs/Line2";
+                break;
+
+            case 2:
+                randomTetName = "Prefabs/Square2";
+                break;
+        }
+
+        return randomTetName;
+
     }
 }
