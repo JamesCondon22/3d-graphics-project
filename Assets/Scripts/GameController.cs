@@ -41,8 +41,12 @@ public class GameController : MonoBehaviour {
     public bool IsFullRowAt(int y)
     {
         //Debug.Log(y);
-        for (int x = 0; x < gridWidth; x++)
+        for (int x = 1; x < gridWidth; x++)
         {
+            if(y == 1)
+            {
+                Debug.Log(grid[x, y]);
+            }
             if(grid[x, y] == null)
             {
                 return false;
@@ -54,7 +58,7 @@ public class GameController : MonoBehaviour {
 
     public void MoveRowDown(int y)
     {
-        for(int x = 0; x < gridWidth; x++)
+        for(int x = 1; x < gridWidth; x++)
         {
             if(grid[x,y] != null)
             {
@@ -75,7 +79,7 @@ public class GameController : MonoBehaviour {
 
     public void DeleteMinoAt(int y)
     {
-        for (int x = 0; x < gridWidth; x++)
+        for (int x = 1; x < gridWidth; x++)
         {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
@@ -86,9 +90,9 @@ public class GameController : MonoBehaviour {
     {
         for(int y = 0; y < gridHeight; y++)
         {
-            //Debug.Log(IsFullRowAt(y));
             if(IsFullRowAt(y))
             {
+                Debug.Log("RowFull" + y);
                 DeleteMinoAt(y);
                 MoveAllRowsDown(y + 1);
                 y--;
@@ -115,6 +119,7 @@ public class GameController : MonoBehaviour {
             }
 
         }
+        //Debug.Log(grid[1, 1]);
         
         foreach (Transform mino in tetromino.transform)
         {
@@ -141,6 +146,40 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public bool CheckLeft(Transform mino)
+    {
+        Vector2 pos = Round(mino.position);
+        pos.x--;
+
+        if(grid[(int)pos.x, (int)pos.y] == null)
+        {
+            return false;
+        }
+        else if (grid[(int)pos.x, (int)pos.y].parent == mino.parent)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckRight(Transform mino)
+    {
+        Vector2 pos = Round(mino.position);
+        pos.x++;
+
+        if (grid[(int)pos.x, (int)pos.y] == null)
+        {
+            return false;
+        }
+        else if (grid[(int)pos.x, (int)pos.y].parent == mino.parent)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public bool CheckNextPos(Transform mino)
     {
         Vector2 pos = Round(mino.position);
@@ -153,8 +192,6 @@ public class GameController : MonoBehaviour {
         {
             return false;
         }
-
-        Debug.Log(grid[(int)pos.x, (int)pos.y].parent + " " + mino.parent);
 
         return true;
     }

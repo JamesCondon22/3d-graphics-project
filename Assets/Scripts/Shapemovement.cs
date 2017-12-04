@@ -52,14 +52,12 @@ public class Shapemovement : MonoBehaviour
 
             if (FindObjectOfType<GameController>().CheckIsInsideGrid(pos) == false)
             {
-                Debug.Log(mino.parent.name + " not in grid");
                 return false;
             }
 
             if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
             {
-
-                Debug.Log(mino.parent.name + " error");
+                
                 return false;
             }
 
@@ -83,10 +81,38 @@ public class Shapemovement : MonoBehaviour
         return true;
     }
 
+    bool CheckMoveLeft()
+    {
+        foreach (Transform mino in transform)
+        {
+
+            if (FindObjectOfType<GameController>().CheckLeft(mino))
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    bool CheckMoveRight()
+    {
+        foreach (Transform mino in transform)
+        {
+
+            if (FindObjectOfType<GameController>().CheckRight(mino))
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     void CheckUserInput()
     {
 
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if(Input.GetKeyDown(KeyCode.RightArrow) && CheckMoveRight())
         {
             transform.position += new Vector3(1, 0, 0);
             if (CheckIsValidPosition())
@@ -98,7 +124,7 @@ public class Shapemovement : MonoBehaviour
                 transform.localPosition = new Vector3(transform.localPosition.x - 1.0f, transform.localPosition.y, 0);
             }
         }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        else if(Input.GetKeyDown(KeyCode.LeftArrow) && CheckMoveLeft())
         {
             transform.position += new Vector3(-1, 0, 0);
             if (CheckIsValidPosition())
@@ -164,15 +190,14 @@ public class Shapemovement : MonoBehaviour
             {
                 //transform.position += new Vector3(0, -1, 0);
                 FindObjectOfType<GameController>().UpdateGrid(this);
-                Debug.Log("Update");
             }
             else
             {
                 transform.position += new Vector3(0, 1, 0);
+                FindObjectOfType<GameController>().UpdateGrid(this);
                 FindObjectOfType<GameController>().DeleteRow();
                 FindObjectOfType<GameController>().SpawnNextTetrimino();
                 enabled = false;
-                Debug.Log("Delete row");
             }
         }
     }
