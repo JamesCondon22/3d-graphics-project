@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
 
     public static int gridWidth = 11;
     public static int gridHeight = 24;
-
+    public int currentLevel;
     public ParticleSystem Firework;
 
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour {
     private bool gameStarted = false;
     private bool checkNext = false;
     private Vector2 previewPosition = new Vector2(-7f, 15);
+    private int bombCounter = 0;
 
     private bool gameover = false;
     
@@ -315,7 +316,9 @@ public class GameController : MonoBehaviour {
 
     string GetRandomTetrimino()
     {
-        int random = Random.Range(1, 8);
+        int random = Random.Range(1, 8); ;
+       
+
 
         string randomTetName = "Prefabs/Line2";
 
@@ -343,6 +346,16 @@ public class GameController : MonoBehaviour {
             case 7:
                 randomTetName = "Prefabs/Z_Shape";
                 break;
+        }
+
+        if (currentLevel == 2 && bombCounter > 1)
+        {
+            bombCounter = 0;
+            randomTetName = "Prefabs/Bomb";
+        }
+        else
+        {
+            bombCounter++;
         }
 
         return randomTetName;
