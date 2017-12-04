@@ -10,8 +10,8 @@ public class Shapemovement : MonoBehaviour
     private bool moveLeft;
     private bool moveRight;
     //made public because it will be set to false when a new shape is spawned 
-    public bool dropping;
     private bool next = true;
+    public bool dropping = false;
 
     private float fall = 0;
     public float fallSpeed = 1;
@@ -47,6 +47,7 @@ public class Shapemovement : MonoBehaviour
         {
             CheckUserInput();
         }
+       
 
 
         foreach (Transform mino in transform)
@@ -242,6 +243,33 @@ public class Shapemovement : MonoBehaviour
                 FindObjectOfType<GameController>().SpawnNextTetrimino();
                 enabled = false;
             }
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            dropping = true;
+            
+
+            while (dropping == true)
+            {
+                transform.position += new Vector3(0, -1f, 0);
+                if (CheckIsValidPosition() && CheckIfGoingToCollide())
+                {
+                    
+                    FindObjectOfType<GameController>().UpdateGrid(this);
+                    
+                }
+                else
+                {
+                    transform.position += new Vector3(0, 1, 0);
+                    FindObjectOfType<GameController>().UpdateGrid(this);
+                    dropping = false;
+                }
+                
+                    
+                
+            }
+
+            
         }
     }
 }

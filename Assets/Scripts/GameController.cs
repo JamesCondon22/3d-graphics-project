@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
     public static int gridWidth = 11;
     public static int gridHeight = 24;
 
+    public ParticleSystem Firework;
+
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
     public GameObject tShape;
@@ -44,6 +46,7 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Firework.GetComponent<ParticleSystem>();
         SpawnNextTetrimino();
 
     }
@@ -52,6 +55,7 @@ public class GameController : MonoBehaviour {
     {
         UpdateScore();
         UpdateUI();
+        
     }
 	
     public void UpdateUI()
@@ -125,10 +129,6 @@ public class GameController : MonoBehaviour {
         //Debug.Log(y);
         for (int x = 1; x < gridWidth; x++)
         {
-            if(y == 1)
-            {
-                Debug.Log(grid[x, y]);
-            }
             if(grid[x, y] == null)
             {
                 return false;
@@ -168,6 +168,10 @@ public class GameController : MonoBehaviour {
         {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
+            Instantiate(Firework);
+            Firework.transform.position = new Vector3(x, y, -1);
+            Firework.Play();
+            Debug.Log("firework X:" + x + " Y: " + y);
         }
     }
 
@@ -184,6 +188,7 @@ public class GameController : MonoBehaviour {
                 //hello
             }
         }
+        
     }
 
     public void UpdateGrid(Shapemovement tetromino)
