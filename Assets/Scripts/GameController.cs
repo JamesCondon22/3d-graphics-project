@@ -17,7 +17,13 @@ public class GameController : MonoBehaviour {
     public GameObject sShape;
     public GameObject zShape;
     public float wait;
-    
+
+
+    private GameObject previewTetrimino;
+    private GameObject nextTetrimino;
+
+    private bool gameStarted = false;
+    private Vector2 previewPosition = new Vector2(-6.5f, 15);
 
 
     // Use this for initialization
@@ -161,12 +167,29 @@ public class GameController : MonoBehaviour {
     
     public void SpawnNextTetrimino()
     {
-        GameObject nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f,20.0f), Quaternion.identity);
+        if (!gameStarted)
+        {
+            gameStarted = true;
+            nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
+            previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition,Quaternion.identity);
+            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+        }
+    
+        else
+        {
+            previewTetrimino.transform.localPosition = new Vector2(5.0f, 20.0f);
+            nextTetrimino = previewTetrimino;
+            nextTetrimino.GetComponent<Shapemovement>().enabled = true;
+
+            previewTetrimino = (GameObject) Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
+            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+        }
+
     }
 
     string GetRandomTetrimino()
     {
-        int random = Random.Range(1, 0);
+        int random = Random.Range(1, 8);
 
         string randomTetName = "Prefabs/Line2";
 
@@ -178,6 +201,23 @@ public class GameController : MonoBehaviour {
 
             case 2:
                 randomTetName = "Prefabs/Square2";
+                break;
+            case 3:
+                randomTetName = "Prefabs/L_Shape";
+                break;
+
+            case 4:
+                randomTetName = "Prefabs/L_Shape(mirrored)";
+                break;
+            case 5:
+                randomTetName = "Prefabs/S_Shape";
+                break;
+
+            case 6:
+                randomTetName = "Prefabs/T_Shape";
+                break;
+            case 7:
+                randomTetName = "Prefabs/Z_Shape";
                 break;
         }
 
