@@ -11,6 +11,7 @@ public class Shapemovement : MonoBehaviour
     private bool moveRight;
     //made public because it will be set to false when a new shape is spawned 
     public bool dropping;
+    private bool next = true;
 
     private float fall = 0;
     public float fallSpeed = 1;
@@ -21,12 +22,16 @@ public class Shapemovement : MonoBehaviour
 
     public bool move = true;
 
+
     //game sounds
     public AudioClip rightMove;
     public AudioClip leftMove;
     public AudioClip rotate;
 
     private AudioSource audioSource;
+
+    private bool gameover = false;
+
 
     // Use this for initialization
     void Start()
@@ -42,8 +47,19 @@ public class Shapemovement : MonoBehaviour
         {
             CheckUserInput();
         }
-        
 
+
+        foreach (Transform mino in transform)
+        {
+            Vector2 pos = FindObjectOfType<GameController>().Round(mino.position);
+
+            if (pos.y >= 18 && (pos.x > 8 || pos.x >= 0 && pos.x < 5) && !enabled && gameover == false)
+            {
+                Debug.Log("Game over");
+                gameover = true;
+                FindObjectOfType<GameController>().GameOver();
+            }
+        }
     }
 
     void  PlayMoveLeftAudio()
@@ -218,7 +234,7 @@ public class Shapemovement : MonoBehaviour
                     PlayMoveRightAudio();
                 }
             }
-            else
+            else if (gameover == false)
             {
                 transform.position += new Vector3(0, 1, 0);
                 FindObjectOfType<GameController>().UpdateGrid(this);

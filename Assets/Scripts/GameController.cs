@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
     public static int gridWidth = 11;
-    public static int gridHeight = 23;
+    public static int gridHeight = 24;
 
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
     public GameObject sShape;
     public GameObject zShape;
     public float wait;
-
+    
     public int scoreForOne = 50;
     public int scoreForTwo= 100;
     public int scoreForThree= 300;
@@ -36,6 +36,9 @@ public class GameController : MonoBehaviour {
     private bool gameStarted = false;
     private bool checkNext = false;
     private Vector2 previewPosition = new Vector2(-7f, 15);
+
+    private bool gameover = false;
+    
 
 
     // Use this for initialization
@@ -96,6 +99,11 @@ public class GameController : MonoBehaviour {
     public void ClearedFour()
     {
         currentScore += scoreForFour;
+    }
+
+    public void GameOver()
+    {
+        gameover = true;
     }
 
     public bool CheckIsInsideGrid(Vector2 pos)
@@ -271,22 +279,25 @@ public class GameController : MonoBehaviour {
     
     public void SpawnNextTetrimino()
     {
-        if (!gameStarted)
+        if (gameover == false)
         {
-            gameStarted = true;
-            nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
-            previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
-            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
-        }
+            if (!gameStarted)
+            {
+                gameStarted = true;
+                nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
+                previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
+                previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+            }
 
-        else
-        {
-            previewTetrimino.transform.localPosition = new Vector2(5.0f, 20.0f);
-            nextTetrimino = previewTetrimino;
-            nextTetrimino.GetComponent<Shapemovement>().enabled = true;
+            else
+            {
+                previewTetrimino.transform.localPosition = new Vector2(5.0f, 20.0f);
+                nextTetrimino = previewTetrimino;
+                nextTetrimino.GetComponent<Shapemovement>().enabled = true;
 
-            previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
-            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+                previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
+                previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+            }
         }
 
     }
