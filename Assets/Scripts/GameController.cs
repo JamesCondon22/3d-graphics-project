@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
     public static int gridWidth = 11;
-    public static int gridHeight = 20;
+    public static int gridHeight = 23;
 
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
@@ -35,18 +35,24 @@ public class GameController : MonoBehaviour {
 
     private bool gameStarted = false;
     private bool checkNext = false;
-    private Vector2 previewPosition = new Vector2(-6.5f, 15);
+    private Vector2 previewPosition = new Vector2(-7f, 15);
 
 
     // Use this for initialization
     void Start () {
         SpawnNextTetrimino();
+
+    }
+
+    void Update()
+    {
+        UpdateScore();
         UpdateUI();
     }
 	
     public void UpdateUI()
     {
-        score.text = currentScore.ToString();
+        score.text = "Score: " + currentScore.ToString();
     }
     public void UpdateScore()
     {

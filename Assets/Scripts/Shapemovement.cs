@@ -21,10 +21,17 @@ public class Shapemovement : MonoBehaviour
 
     public bool move = true;
 
+    //game sounds
+    public AudioClip rightMove;
+    public AudioClip leftMove;
+    public AudioClip rotate;
+
+    private AudioSource audioSource;
+
     // Use this for initialization
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -35,8 +42,21 @@ public class Shapemovement : MonoBehaviour
         {
             CheckUserInput();
         }
+        
 
+    }
 
+    void  PlayMoveLeftAudio()
+    {
+        audioSource.PlayOneShot(leftMove);
+    }
+    void PlayMoveRightAudio()
+    {
+        audioSource.PlayOneShot(rightMove);
+    }
+    void PlayRotateAudio()
+    {
+        audioSource.PlayOneShot(rotate);
     }
 
     bool CheckIsValidPosition ()
@@ -118,6 +138,7 @@ public class Shapemovement : MonoBehaviour
             if (CheckIsValidPosition())
             {
                 FindObjectOfType<GameController>().UpdateGrid(this);
+                PlayMoveRightAudio();
             }
             else
             {
@@ -130,6 +151,7 @@ public class Shapemovement : MonoBehaviour
             if (CheckIsValidPosition())
             {
                 FindObjectOfType<GameController>().UpdateGrid(this);
+                PlayMoveLeftAudio();
             }
             else
             {
@@ -158,6 +180,7 @@ public class Shapemovement : MonoBehaviour
                 if (CheckIsValidPosition())
                 {
                     FindObjectOfType<GameController>().UpdateGrid(this);
+                    PlayRotateAudio();
                 }
                 else
                 {
@@ -190,6 +213,10 @@ public class Shapemovement : MonoBehaviour
             {
                 //transform.position += new Vector3(0, -1, 0);
                 FindObjectOfType<GameController>().UpdateGrid(this);
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    PlayMoveRightAudio();
+                }
             }
             else
             {
