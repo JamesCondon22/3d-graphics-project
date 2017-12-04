@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
     public static int gridWidth = 11;
-    public static int gridHeight = 20;
+    public static int gridHeight = 23;
+
+    public ParticleSystem Firework;
 
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
@@ -34,14 +36,15 @@ public class GameController : MonoBehaviour {
     private GameObject nextTetrimino;
 
     private bool gameStarted = false;
-    private bool checkNext = false;
     private Vector2 previewPosition = new Vector2(-6.5f, 15);
 
 
     // Use this for initialization
     void Start () {
+        Firework.GetComponent<ParticleSystem>();
         SpawnNextTetrimino();
         UpdateUI();
+        
     }
 	
     public void UpdateUI()
@@ -109,10 +112,6 @@ public class GameController : MonoBehaviour {
         //Debug.Log(y);
         for (int x = 1; x < gridWidth; x++)
         {
-            if(y == 1)
-            {
-                Debug.Log(grid[x, y]);
-            }
             if(grid[x, y] == null)
             {
                 return false;
@@ -152,6 +151,10 @@ public class GameController : MonoBehaviour {
         {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
+            Instantiate(Firework);
+            Firework.transform.position = new Vector3(x, y, 0);
+            Firework.Play();
+            Debug.Log("firework X:" + x + " Y: " + y);
         }
     }
 
@@ -168,6 +171,7 @@ public class GameController : MonoBehaviour {
                 //hello
             }
         }
+        
     }
 
     public void UpdateGrid(Shapemovement tetromino)

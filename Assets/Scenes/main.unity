@@ -3301,6 +3301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583cb019b2fc59f4c8f085772f51c49f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Firework: {fileID: 198853715129788350, guid: e6b221c824dc11a4da3021183bbb24a0, type: 2}
   tShape: {fileID: 1640488822536078, guid: 8fd7bfe63624a8b448b8ce59f51ad4f2, type: 2}
   lShape: {fileID: 1640488822536078, guid: 8fd7bfe63624a8b448b8ce59f51ad4f2, type: 2}
   mirroredLShape: {fileID: 1640488822536078, guid: 8fd7bfe63624a8b448b8ce59f51ad4f2,
