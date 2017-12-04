@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -17,14 +18,79 @@ public class GameController : MonoBehaviour {
     public GameObject sShape;
     public GameObject zShape;
     public float wait;
-    
+
+    public int scoreForOne = 50;
+    public int scoreForTwo= 100;
+    public int scoreForThree= 300;
+    public int scoreForFour= 1200;
+
+    public Text score;
+
+    private int currentScore;
+
+    private int numberOfRowsThisTurn = 0;
+
+    private GameObject previewTetrimino;
+    private GameObject nextTetrimino;
+
+    private bool gameStarted = false;
+    private bool checkNext = false;
+    private Vector2 previewPosition = new Vector2(-6.5f, 15);
 
 
     // Use this for initialization
     void Start () {
         SpawnNextTetrimino();
+        UpdateUI();
     }
 	
+    public void UpdateUI()
+    {
+        score.text = currentScore.ToString();
+    }
+    public void UpdateScore()
+    {
+        if (numberOfRowsThisTurn > 0)
+        {
+            if (numberOfRowsThisTurn == 1)
+            {
+                ClearedOne();
+                Debug.Log("cleared");
+            }
+            else if (numberOfRowsThisTurn == 2)
+            {
+                ClearedTwo();
+            }
+            else if (numberOfRowsThisTurn == 3)
+            {
+                ClearedThree();
+            }
+            else if (numberOfRowsThisTurn == 4)
+            {
+                ClearedFour();
+            }
+            numberOfRowsThisTurn = 0;
+        }
+        
+    }
+
+    public void ClearedOne()
+    {
+        currentScore += scoreForOne;
+        
+    }
+    public void ClearedTwo()
+    {
+        currentScore += scoreForTwo;
+    }
+    public void ClearedThree()
+    {
+        currentScore += scoreForThree;
+    }
+    public void ClearedFour()
+    {
+        currentScore += scoreForFour;
+    }
 
     public bool CheckIsInsideGrid(Vector2 pos)
     {
@@ -51,8 +117,10 @@ public class GameController : MonoBehaviour {
             {
                 return false;
             }
+            
         }
-
+        numberOfRowsThisTurn++;
+        
         return true;
     }
 
@@ -67,6 +135,7 @@ public class GameController : MonoBehaviour {
                 grid[x, y - 1].position += new Vector3(0, -1, 0);
             }
         }
+        
     }
 
     public void MoveAllRowsDown(int y)
@@ -96,6 +165,7 @@ public class GameController : MonoBehaviour {
                 DeleteMinoAt(y);
                 MoveAllRowsDown(y + 1);
                 y--;
+                //hello
             }
         }
     }
@@ -126,17 +196,14 @@ public class GameController : MonoBehaviour {
             Vector2 pos = new Vector2(Mathf.Round(mino.position.x), Mathf.Round(mino.position.y));
             if(pos.y < gridHeight)
             {
-                //Debug.Log("Mino y pos: " + pos.y);
                 grid[(int)pos.x, (int)pos.y] = mino;
-                //Debug.Log(grid[(int)pos.x, (int)pos.y]);
-                //Debug.Log("X: " + pos.x + "Y: " + pos.y);
             }
         }
     }
 
     public Transform GetTransformAtGridPosition(Vector2 pos)
     {
-        if (pos.y < gridHeight - 1)
+        if (pos.y < gridHeight -1)
         {
             return null;
         }
@@ -198,12 +265,29 @@ public class GameController : MonoBehaviour {
     
     public void SpawnNextTetrimino()
     {
-        GameObject nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f,20.0f), Quaternion.identity);
+        if (!gameStarted)
+        {
+            gameStarted = true;
+            nextTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
+            previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
+            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+        }
+
+        else
+        {
+            previewTetrimino.transform.localPosition = new Vector2(5.0f, 20.0f);
+            nextTetrimino = previewTetrimino;
+            nextTetrimino.GetComponent<Shapemovement>().enabled = true;
+
+            previewTetrimino = (GameObject)Instantiate(Resources.Load(GetRandomTetrimino(), typeof(GameObject)), previewPosition, Quaternion.identity);
+            previewTetrimino.GetComponent<Shapemovement>().enabled = false;
+        }
+
     }
 
     string GetRandomTetrimino()
     {
-        int random = Random.Range(1, 0);
+        int random = Random.Range(1, 8);
 
         string randomTetName = "Prefabs/Line2";
 
@@ -215,6 +299,21 @@ public class GameController : MonoBehaviour {
 
             case 2:
                 randomTetName = "Prefabs/Square2";
+                break;
+            case 3:
+                randomTetName = "Prefabs/L_Shape";
+                break;
+            case 4:
+                randomTetName = "Prefabs/L_Shape(mirrored)";
+                break;
+            case 5:
+                randomTetName = "Prefabs/S_Shape";
+                break;
+            case 6:
+                randomTetName = "Prefabs/T_Shape";
+                break;
+            case 7:
+                randomTetName = "Prefabs/Z_Shape";
                 break;
         }
 

@@ -73,7 +73,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4807354491969166}
-  - component: {fileID: 54841129982824776}
   - component: {fileID: 114764869762685202}
   m_Layer: 0
   m_Name: L_Shape(mirrored)
@@ -120,7 +119,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1475054780578550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4807354491969166}
@@ -325,21 +324,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1329699246459712}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54841129982824776
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1670879510748476}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &65029768401152870
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -401,3 +385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitMove: 1
   dropping: 0
+  fallSpeed: 1
+  allowRotation: 1
+  limitRotation: 0
+  move: 1
