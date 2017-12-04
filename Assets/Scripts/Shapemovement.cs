@@ -91,8 +91,7 @@ public class Shapemovement : MonoBehaviour
             {
                 return false;
             }
-
-            if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
+            else if(FindObjectOfType<GameController>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<GameController>().GetTransformAtGridPosition(pos).parent != transform)
             {
                 
                 return false;

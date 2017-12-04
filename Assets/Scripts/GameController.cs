@@ -256,7 +256,11 @@ public class GameController : MonoBehaviour {
         Vector2 pos = Round(mino.position);
         pos.x++;
 
-        if (grid[(int)pos.x, (int)pos.y] == null)
+        if(pos.x >= gridWidth)
+        {
+            return false;
+        }
+        else if (grid[(int)pos.x, (int)pos.y] == null)
         {
             return false;
         }
